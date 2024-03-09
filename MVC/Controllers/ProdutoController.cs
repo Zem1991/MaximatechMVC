@@ -12,7 +12,7 @@ namespace MVC.Controllers
 
         public ProdutoController() : base()
         {
-            UrlBase = $"https://localhost:7210/api/Produto";
+            UrlBase = $"https://localhost:7210/api/Product";
         }
 
         // GET: Produto
@@ -93,7 +93,8 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Descricao,Preco,Status")] Produto produto)
         {
-            string fullUrl = $"{UrlBase}/{id}";
+            //string fullUrl = $"{UrlBase}/{id}";
+            string fullUrl = $"{UrlBase}";
             HttpResponseMessage response = await PutAsJsonAsync(fullUrl, produto);
             if (response.IsSuccessStatusCode)
             {
