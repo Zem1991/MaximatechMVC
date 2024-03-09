@@ -20,7 +20,7 @@
         /// <summary>
         /// Departamento - Lista de departamentos - Caixa de Seleção (Será consumido via GET da api criada)
         /// </summary>
-        public string Departamento { get; set; }
+        //public string Departamento { get; set; }
 
         /// <summary>
         /// Preço - Preço do Produto - Decimal

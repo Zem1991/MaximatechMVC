@@ -56,19 +56,20 @@ namespace MVC.Controllers
         // POST: Produto/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo,Descricao,Preco,Status")] Produto produto)
+        public async Task<IActionResult> Create(Produto produto)
         {
             string fullUrl = $"{UrlBase}";
             HttpResponseMessage response = await PostAsJsonAsync(fullUrl, produto);
             if (response.IsSuccessStatusCode)
             {
-                Produto content = response.Content.ReadAsAsync<Produto>().Result;
-                string redirectTo = $"{nameof(Details)}/{produto.Id}";
-                return RedirectToAction(redirectTo);
+                //string redirectTo = $"{nameof(Details)}/{produto.Id}";
+                //return RedirectToAction(redirectTo);
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                return BadRequest();
+                string message = response.Content.ReadAsStringAsync().Result;
+                return BadRequest(message);
             }
         }
 
@@ -91,20 +92,21 @@ namespace MVC.Controllers
         // POST: Produto/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Descricao,Preco,Status")] Produto produto)
+        public async Task<IActionResult> Edit(int id, Produto produto)
         {
             //string fullUrl = $"{UrlBase}/{id}";
             string fullUrl = $"{UrlBase}";
             HttpResponseMessage response = await PutAsJsonAsync(fullUrl, produto);
             if (response.IsSuccessStatusCode)
             {
-                Produto content = response.Content.ReadAsAsync<Produto>().Result;
-                string redirectTo = $"{nameof(Details)}/{produto.Id}";
-                return RedirectToAction(redirectTo);
+                //string redirectTo = $"{nameof(Details)}/{produto.Id}";
+                //return RedirectToAction(redirectTo);
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                return BadRequest();
+                string message = response.Content.ReadAsStringAsync().Result;
+                return BadRequest(message);
             }
         }
 
@@ -137,7 +139,8 @@ namespace MVC.Controllers
             }
             else
             {
-                return BadRequest();
+                string message = response.Content.ReadAsStringAsync().Result;
+                return BadRequest(message);
             }
         }
     }
