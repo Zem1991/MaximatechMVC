@@ -12,7 +12,6 @@
         /// </summary>
         public string Codigo { get; set; }
 
-
         /// <summary>
         /// Descrição - Descrição do Produto - Texto
         /// </summary>
@@ -21,7 +20,7 @@
         /// <summary>
         /// Departamento - Lista de departamentos - Caixa de Seleção (Será consumido via GET da api criada)
         /// </summary>
-        public Departamento Departamento { get; set; }
+        public string Departamento { get; set; }
 
         /// <summary>
         /// Preço - Preço do Produto - Decimal
