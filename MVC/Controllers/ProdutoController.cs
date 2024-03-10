@@ -129,7 +129,7 @@ namespace MVC.Controllers
         // POST: Produto/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id, Produto produto)
         {
             string fullUrl = $"{UrlBase}/{id}";
             HttpResponseMessage response = await HttpDeleteAsync(fullUrl);
