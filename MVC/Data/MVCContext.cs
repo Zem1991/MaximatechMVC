@@ -15,5 +15,7 @@ namespace MVC.Data
         }
 
         public DbSet<MVC.Models.Produto> Produto { get; set; } = default!;
+
+        public DbSet<MVC.Models.Departamento> Departamento { get; set; } = default!;
     }
 }
