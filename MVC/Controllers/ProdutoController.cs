@@ -18,6 +18,7 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 List<Produto> contents = response.Content.ReadAsAsync<List<Produto>>().Result;
+                await FillViewBagDepartamentos();
                 return View(contents);
             }
             else
@@ -34,6 +35,7 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Produto content = response.Content.ReadAsAsync<Produto>().Result;
+                await FillViewBagDepartamentos(content.IdDepartamento);
                 return View(content);
             }
             else
@@ -45,7 +47,7 @@ namespace MVC.Controllers
         // GET: Produto/Create
         public async Task<IActionResult> Create()
         {
-            await Selectecategorywithproduct();
+            await FillViewBagDepartamentos();
             return View();
         }
 
@@ -77,7 +79,7 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Produto content = response.Content.ReadAsAsync<Produto>().Result;
-                await Selectecategorywithproduct(content.IdDepartamento);
+                await FillViewBagDepartamentos(content.IdDepartamento);
                 return View(content);
             }
             else
@@ -115,6 +117,7 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Produto content = response.Content.ReadAsAsync<Produto>().Result;
+                await FillViewBagDepartamentos(content.IdDepartamento);
                 return View(content);
             }
             else
@@ -141,7 +144,7 @@ namespace MVC.Controllers
             }
         }
 
-        private async Task Selectecategorywithproduct(int selected = 0)
+        private async Task FillViewBagDepartamentos(int selectedValueIndex = 0)
         {
             string fullUrl = $"{DepartamentoController.UrlBase}";
             HttpResponseMessage response = await HttpGetAsync(fullUrl);
@@ -151,15 +154,21 @@ namespace MVC.Controllers
                 List<SelectListItem> dropdownItems = new();
                 foreach (var item in departamentos)
                 {
+                    bool selected = item.Id == selectedValueIndex;
+                    string text = $"{item.Codigo} | {item.Descricao}";
                     SelectListItem slItem = new()
                     {
-                        Selected = item.Id == selected,
-                        Text = $"{item.Codigo} | {item.Descricao}",
+                        Selected = selected,
+                        Text = text,
                         Value = $"{item.Id}"
                     };
                     dropdownItems.Add(slItem);
+                    if (selected)
+                    {
+                        ViewBag.TextDepartamento = text;
+                    }
                 }
-                SelectList listItems = new(dropdownItems, "Value", "Text", selected);
+                SelectList listItems = new(dropdownItems, "Value", "Text", selectedValueIndex);
                 ViewBag.Departamentos = listItems;
             }
             //else
