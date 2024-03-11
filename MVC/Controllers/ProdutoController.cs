@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Models;
 
 namespace MVC.Controllers
 {
     public class ProdutoController : MaximatechCoreController
     {
-        private string UrlBase { get; }
+        public static string UrlBase { get; } = UrlBase = $"https://localhost:7210/api/Product";
 
-        public ProdutoController() : base()
-        {
-            UrlBase = $"https://localhost:7210/api/Product";
-        }
+        public ProdutoController() : base() { }
 
         // GET: Produto
         public async Task<IActionResult> Index()
@@ -47,6 +45,7 @@ namespace MVC.Controllers
         // GET: Produto/Create
         public async Task<IActionResult> Create()
         {
+            await Selectecategorywithproduct();
             return View();
         }
 
@@ -139,6 +138,23 @@ namespace MVC.Controllers
                 string message = response.Content.ReadAsStringAsync().Result;
                 return BadRequest(message);
             }
+        }
+
+        private async Task Selectecategorywithproduct(int selected = 0)
+        {
+            string fullUrl = $"{DepartamentoController.UrlBase}";
+            HttpResponseMessage response = await HttpGetAsync(fullUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                List<Departamento> category = response.Content.ReadAsAsync<List<Departamento>>().Result;
+                SelectList listItems = new(category, "Codigo", "Descricao", selected);
+                ViewBag.Departamentos = listItems;
+            }
+            //else
+            //{
+            //    string message = response.Content.ReadAsStringAsync().Result;
+            //    BadRequest(message);
+            //}
         }
     }
 }
