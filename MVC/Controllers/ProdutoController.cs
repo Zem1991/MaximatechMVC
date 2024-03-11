@@ -77,6 +77,7 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Produto content = response.Content.ReadAsAsync<Produto>().Result;
+                await Selectecategorywithproduct(content.IdDepartamento);
                 return View(content);
             }
             else
@@ -146,8 +147,19 @@ namespace MVC.Controllers
             HttpResponseMessage response = await HttpGetAsync(fullUrl);
             if (response.IsSuccessStatusCode)
             {
-                List<Departamento> category = response.Content.ReadAsAsync<List<Departamento>>().Result;
-                SelectList listItems = new(category, "Codigo", "Descricao", selected);
+                List<Departamento> departamentos = response.Content.ReadAsAsync<List<Departamento>>().Result;
+                List<SelectListItem> dropdownItems = new();
+                foreach (var item in departamentos)
+                {
+                    SelectListItem slItem = new()
+                    {
+                        Selected = item.Id == selected,
+                        Text = $"{item.Codigo} | {item.Descricao}",
+                        Value = $"{item.Id}"
+                    };
+                    dropdownItems.Add(slItem);
+                }
+                SelectList listItems = new(dropdownItems, "Value", "Text", selected);
                 ViewBag.Departamentos = listItems;
             }
             //else
